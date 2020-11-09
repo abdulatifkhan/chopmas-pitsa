@@ -9,6 +9,12 @@ var elSizeRadioWrapper = elPizzaForm.querySelector('.js-size-radio-wrapper');
 var elToppingCheckboxWrapper = elPizzaForm.querySelector('.js-topping-checkbox-wrapper');
 var elAddlIngredientWrapper = elPizzaForm.querySelector('.js-addl-ingredient-wrapper');
 
+var elOrderState = document.querySelector('.order-state');
+var elOrderBread = elOrderState.querySelector('.js-order-bread');
+var elOlderSize = elOrderState.querySelector('.js-order-size');
+var elOlderToppings = elOrderState.querySelector('.js-order-toppings');
+var elOlderAddl = elOrderState.querySelector('.js-order-addl');
+
 for (var i = 0; i < breadTypes.length; i++) {
   var elNewBreadOption = document.createElement('option');
   elNewBreadOption.textContent = breadTypes[i];
@@ -27,6 +33,10 @@ for (var i = 0; i < sizes.length; i++) {
   elSizeInput.value = sizes[i];
 
   elSizeSpan.textContent = `${sizes[i]} sm`;
+
+  elSizeInput.addEventListener('change', function() {
+    elOlderSize.textContent = this.value;
+  });
 
   elSizeLabel.append(elSizeInput, elSizeSpan);
   elSizeRadioWrapper.appendChild(elSizeLabel);
@@ -63,3 +73,10 @@ for (var i = 0; i < addl.length; i++) {
   elAddlLabel.append(elAddlInput, elAddlSpan);
   elAddlIngredientWrapper.appendChild(elAddlLabel);
 }
+
+var updateBreadType = function () {
+  elOrderBread.textContent = elBreadSelect.value;
+}
+
+updateBreadType();
+elBreadSelect.addEventListener('change', updateBreadType);
