@@ -3,6 +3,8 @@ var sizes = [25, 30, 35];
 var toppings = ['Pomidor', 'Tuzlangan bodring', `Kurka go'shti`, `Qo'ziqorin`, 'Zaytun', 'Qazi'];
 var addl = ['Achchiq', 'Sosiskali'];
 
+var orderToppings = [];
+
 var elPizzaForm = document.querySelector('.js-pizza-form');
 var elBreadSelect = elPizzaForm.querySelector('.js-bread-select');
 var elSizeRadioWrapper = elPizzaForm.querySelector('.js-size-radio-wrapper');
@@ -12,8 +14,21 @@ var elAddlIngredientWrapper = elPizzaForm.querySelector('.js-addl-ingredient-wra
 var elOrderState = document.querySelector('.order-state');
 var elOrderBread = elOrderState.querySelector('.js-order-bread');
 var elOlderSize = elOrderState.querySelector('.js-order-size');
-var elOlderToppings = elOrderState.querySelector('.js-order-toppings');
+var elOrderToppings = elOrderState.querySelector('.js-order-toppings');
 var elOlderAddl = elOrderState.querySelector('.js-order-addl');
+
+var showOrderToppings = function () {
+  elOrderToppings.innerHTML = '';
+
+  for (var i = 0; i < orderToppings.length; i++) {
+    var elNewOrderLi = document.createElement('li');
+    elNewOrderLi.textContent = orderToppings[i];
+
+    elOrderToppings.appendChild(elNewOrderLi);
+
+    console.log(elNewOrderLi.value);
+  }
+};
 
 for (var i = 0; i < breadTypes.length; i++) {
   var elNewBreadOption = document.createElement('option');
@@ -50,12 +65,24 @@ for (var i = 0; i < toppings.length; i++) {
   elToppingInput.type = 'checkbox';
   elToppingInput.name = 'size';
   elToppingInput.classList.add('topping-checkbox', 'js-topping-checkbox', 'ml-3');
-  elToppingInput.value = sizes[i];
+  elToppingInput.value = toppings[i];
 
   elToppingSpan.textContent = toppings[i];
 
   elToppingLabel.append(elToppingInput, elToppingSpan);
   elToppingCheckboxWrapper.appendChild(elToppingLabel);
+
+  elToppingInput.addEventListener('change', function() {
+    // if (orderToppings.includes(this.value)) {
+    if (orderToppings.indexOf(this.value) > -1) {
+      var toppingIndex = orderToppings.indexOf(this.value);
+      orderToppings.splice(toppingIndex, 1);
+    } else {
+      orderToppings.push(this.value);
+    }
+
+    showOrderToppings();
+  });
 }
 
 for (var i = 0; i < addl.length; i++) {
