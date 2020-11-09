@@ -4,6 +4,7 @@ var toppings = ['Pomidor', 'Tuzlangan bodring', `Kurka go'shti`, `Qo'ziqorin`, '
 var addl = ['Achchiq', 'Sosiskali'];
 
 var orderToppings = [];
+var orderAddl = [];
 
 var elPizzaForm = document.querySelector('.js-pizza-form');
 var elBreadSelect = elPizzaForm.querySelector('.js-bread-select');
@@ -13,9 +14,9 @@ var elAddlIngredientWrapper = elPizzaForm.querySelector('.js-addl-ingredient-wra
 
 var elOrderState = document.querySelector('.order-state');
 var elOrderBread = elOrderState.querySelector('.js-order-bread');
-var elOlderSize = elOrderState.querySelector('.js-order-size');
+var elOrderSize = elOrderState.querySelector('.js-order-size');
 var elOrderToppings = elOrderState.querySelector('.js-order-toppings');
-var elOlderAddl = elOrderState.querySelector('.js-order-addl');
+var elOrderAddl = elOrderState.querySelector('.js-order-addl');
 
 var showOrderToppings = function () {
   elOrderToppings.innerHTML = '';
@@ -29,6 +30,17 @@ var showOrderToppings = function () {
     console.log(elNewOrderLi.value);
   }
 };
+
+var showOrderAddl = function () {
+  elOrderAddl.innerHTML = '';
+
+  for (var i = 0; i < orderAddl.length; i++) {
+    var elNewAddlLi = document.createElement('li');
+    elNewAddlLi.textContent = orderAddl[i];
+
+    elOrderAddl.appendChild(elNewAddlLi);
+  }
+}
 
 for (var i = 0; i < breadTypes.length; i++) {
   var elNewBreadOption = document.createElement('option');
@@ -50,7 +62,7 @@ for (var i = 0; i < sizes.length; i++) {
   elSizeSpan.textContent = `${sizes[i]} sm`;
 
   elSizeInput.addEventListener('change', function() {
-    elOlderSize.textContent = this.value;
+    elOrderSize.textContent = this.value;
   });
 
   elSizeLabel.append(elSizeInput, elSizeSpan);
@@ -99,6 +111,17 @@ for (var i = 0; i < addl.length; i++) {
 
   elAddlLabel.append(elAddlInput, elAddlSpan);
   elAddlIngredientWrapper.appendChild(elAddlLabel);
+
+  elAddlInput.addEventListener('change', function () {
+    if (orderAddl.indexOf(this.value) > -1) {
+      var addlIndex = orderAddl.indexOf(this.value);
+      orderAddl.splice(addlIndex, 1);
+    } else {
+      orderAddl.push(this.value);
+    }
+  
+    showOrderAddl();
+  });
 }
 
 var updateBreadType = function () {
